@@ -9,11 +9,11 @@
 </template>
 
 <script>
-  import navbar from './partials/Navbar.vue';
+  import navbar from './partials/Navbar.vue'
   export default {
     components: {
       navbar
     }
-  };
+  }
 </script>
 

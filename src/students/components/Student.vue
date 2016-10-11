@@ -3,8 +3,7 @@
 </template>
 
 <script>
-  import ValidationServer from '../services/validate';
-  import newUser from '../../partials/NewUser.vue';
+  import newUser from '../../partials/NewUser.vue'
   export default {
     components: {
       'new-user': newUser

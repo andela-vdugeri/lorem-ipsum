@@ -91,10 +91,9 @@
 
 
 <script>
-  import ValidationServer from './../students/services/validate';
-  
+  import ValidationServer from './../students/services/validate'
   export default {
-    data() {
+    data () {
       return {
         firstname: '',
         lastname: '',
@@ -103,63 +102,65 @@
         password: '',
         confirmPassword: '',
         errors: {},
-        success: {},
+        success: {}
       }
     },
     computed: {
-      formValid() {
-        return (this.firstname.trim().length && !this.errors.firstname)
-          && (this.lastname.trim().length && !this.errors.lastname)
-          && (this.emailAddress.trim().length && !this.errors.emailAddress)
-          && (this.username.trim().length && !this.errors.username)
-          && (this.password.trim().length && !this.errors.password)
-          && (this.confirmPassword.trim());
+      formValid () {
+        return (this.firstname.trim().length && !this.errors.firstname) &&
+        (this.lastname.trim().length && !this.errors.lastname) &&
+        (this.emailAddress.trim().length && !this.errors.emailAddress) &&
+        (this.username.trim().length && !this.errors.username) &&
+        (this.password.trim().length && !this.errors.password) &&
+        (this.confirmPassword.trim())
       }
     },
     methods: {
-      validateUsername() {
+      validateUsername () {
         ValidationServer.username(this, this.username).then(isValid => {
           this.success.username = true
         })
-        .catch(error =>  {
+        .catch(error => {
           this.errors.username = true
+          console.log(error)
         })
       },
 
-      validatePassword() {
+      validatePassword () {
         if ((this.confirmPassword.trim().length) && (this.password === this.confirmPassword)) {
-          this.successes.password = true;
+          this.successes.password = true
         } else {
-          this.errors.password = true;
+          this.errors.password = true
         }
       },
 
-      validateEmail() {
+      validateEmail () {
         ValidationServer.email(this, this.username).then(isValid => {
-          this.success.emailAddress = true;
+          this.success.emailAddress = true
         })
         .catch(error => {
-          this.errors.emailAdress = true;
-        });
+          this.errors.emailAdress = true
+          console.log(error)
+        })
       },
 
-      validateFirstName() {
+      validateFirstName () {
         if (this.firstname.trim().length) {
-          this.success.firstname = true;
+          this.success.firstname = true
         } else {
-          this.errors.firstname = true;
+          this.errors.firstname = true
         }
       },
 
-      validateLastName() {
+      validateLastName () {
         if (this.lastname.trim().length) {
-          this.success.lastname = true;
+          this.success.lastname = true
         } else {
-          this.errors.lastname = true;
+          this.errors.lastname = true
         }
       },
-      
-      hadleSubmit() {
+
+      hadleSubmit () {
         console.log('Staff saved')
       }
     }

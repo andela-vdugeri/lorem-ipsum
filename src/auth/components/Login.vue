@@ -45,7 +45,7 @@
 
 <script>
   export default {
-    data() {
+    data () {
       return {
         username: '',
         password: '',
@@ -53,13 +53,13 @@
       }
     },
     computed: {
-      formFilled() {
-        return this.password.trim().length && this.username.trim().length 
+      formFilled () {
+        return this.password.trim().length && this.username.trim().length
       }
     },
     methods: {
-      submitForm() {
-        console.log('Hello');
+      submitForm () {
+        console.log('Hello')
       }
     }
   }

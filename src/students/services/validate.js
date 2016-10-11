@@ -1,6 +1,5 @@
 import config from '../../../config/config.json'
 
-
 class ValidationServer {
   constructor (config) {
     this.config = config
