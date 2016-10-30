@@ -18,6 +18,7 @@
           <li class="active"><a href="#">&nbsp;<span class="sr-only">(current)</span></a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
+          <li><router-link to="/register">Register</router-link></li>
           <li><router-link to="/login">Sign In</router-link></li>
           <li><router-link to="/students">Students</router-link></li>
           <li><router-link to="/staff">Staff</router-link></li>

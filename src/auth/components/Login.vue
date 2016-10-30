@@ -1,7 +1,6 @@
 <template>
-  <div class="container">
-    <div class="col-md-6 col-md-offset-3">
-      <div class="panel panel-info">
+  <div class="container col-md-5 col-md-offset-3 margin-top">
+      <div class="panel panel-default">
       <div class="panel-heading">Login</div>
       <div class="panel-body">
         <form method="post" @submit.prevent>
@@ -34,10 +33,8 @@
               v-on:click="submitForm"
             >
           </div>
-
         </form>
       </div>
-    </div>
     </div>
   </div>
 </template>
@@ -64,3 +61,7 @@
     }
   }
 </script>
+
+<style>
+
+</style>
