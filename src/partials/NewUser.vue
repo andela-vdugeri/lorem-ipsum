@@ -1,7 +1,7 @@
 <template>
   <div class="container margin-top">
     <div class="row">
-      <div class="col-md-6 col-md-offset-3">
+      <div class="col-md-7 col-md-offset-5">
         <div class="panel panel-default ">
           <div class="panel-heading">
             New User
@@ -48,6 +48,7 @@
                   class="form-control"
                   v-model="emailAddress"
                   v-on:blur="validateEmail"
+                  :disabled="true"
                 >
               </div>
               
@@ -93,6 +94,9 @@
 <script>
   import ValidationServer from './../students/services/validate'
   export default {
+    mounted() {
+      this.emailAddress = localStorage.getItem('portal-confirm-email');
+    },
     data () {
       return {
         firstname: '',
@@ -102,7 +106,7 @@
         password: '',
         confirmPassword: '',
         errors: {},
-        success: {}
+        success: {},
       }
     },
     computed: {

@@ -1,12 +1,13 @@
 <template>
-  <div class="container col-md-5 col-md-offset-3 margin-top">
+  <div class="container margin-top">
+    <div class="col-md-5 col-md-offset-5">
       <div class="panel panel-default">
       <div class="panel-heading">Login</div>
       <div class="panel-body">
         <form method="post" @submit.prevent>
           <div class="form-group" v-bind:class="{'has-error': errors.username}">
             <label for="username">Username</label>
-            <input 
+            <input
               type="text"
               placeholder="Usernmae"
               class="form-control"
@@ -16,7 +17,7 @@
 
           <div class="form-group" v-bind:class="{'has-error': errors.password}">
             <label for="password">Password</label>
-            <input 
+            <input
               type="text"
               placeholder="Password"
               class="form-control"
@@ -25,7 +26,7 @@
           </div>
 
           <div class="form-group">
-            <input 
+            <input
               type="submit"
               value="Log In"
               class="btn btn-primary pull-right"
@@ -35,6 +36,7 @@
           </div>
         </form>
       </div>
+    </div>
     </div>
   </div>
 </template>

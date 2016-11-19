@@ -12,7 +12,7 @@ export default {
       };
 
       context.$http.post(endpoint, req).then(res => {
-        console.log(res.data);
+        localStorage.setItem('portal-confirm-email', emailAddress);
         resolve(res.data);
       })
       .catch(err => {
