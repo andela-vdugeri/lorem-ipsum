@@ -2,6 +2,9 @@
   <div class="container margin-top">
     <div class="row">
       <div class="col-md-7 col-md-offset-5">
+        <div class="alert alert-danger" v-if="regError.message">
+          {{regError.message }}
+        </div>
         <div class="panel panel-default ">
           <div class="panel-heading">
             New User
@@ -10,7 +13,7 @@
             <form method="post" @submit.prevent>
               <div class="form-group" v-bind:class="{'has-success': success.firstname, 'has-error': errors.firstname }">
                 <label for="firstname">First Name</label>
-                <input 
+                <input
                   type="text"
                   placeholder="First Name"
                   class="form-control"
@@ -21,7 +24,7 @@
 
               <div class="form-group" v-bind:class="{'has-success': success.lastname, 'has-error': errors.lastname }">
                 <label for="lastname">Last Name</label>
-                <input 
+                <input
                   type="text"
                   placeholder="Last Name"
                   class="form-control"
@@ -32,7 +35,7 @@
 
               <div class="form-group" v-bind:class="{'has-success': success.username, 'has-error': errors.username }">
                 <label for="username">Username</label>
-                <input 
+                <input
                   type="text"
                   placeholder="Username"
                   class="form-control"
@@ -42,7 +45,7 @@
               </div>
               <div class="form-group" v-bind:class="{'has-success': success.emailAddress, 'has-error': errors.emailAddress }">
                 <label for="emailAddress">Email Address</label>
-                <input 
+                <input
                   type="email"
                   placeholder="Email Address"
                   class="form-control"
@@ -51,10 +54,10 @@
                   :disabled="true"
                 >
               </div>
-              
+
               <div class="form-group" v-bind:class="{'has-success': success.password, 'has-error': errors.password }">
                 <label for="password">Password</label>
-                <input 
+                <input
                   type="password"
                   placeholder="Password"
                   class="form-control"
@@ -64,7 +67,7 @@
 
               <div class="form-group" v-bind:class="{'has-success': success.password, 'has-error': errors.password }">
                 <label for="repeat_password">Repeat Password</label>
-                <input 
+                <input
                   type="password"
                   placeholder="Repeat Password"
                   class="form-control"
@@ -74,7 +77,7 @@
               </div>
 
               <div class="form-group">
-                <input 
+                <input
                   type="submit"
                   value="Save"
                   class="btn btn-primary pull-right"
@@ -92,7 +95,10 @@
 
 
 <script>
-  import ValidationServer from './../students/services/validate'
+  import {Router} from '../main';
+  import AuthServer from '../auth/services/auth';
+  import ValidationServer from './../students/services/validate';
+
   export default {
     mounted() {
       this.emailAddress = localStorage.getItem('portal-confirm-email');
@@ -107,6 +113,7 @@
         confirmPassword: '',
         errors: {},
         success: {},
+        regError: {},
       }
     },
     computed: {
@@ -122,16 +129,19 @@
     methods: {
       validateUsername () {
         ValidationServer.username(this, this.username).then(isValid => {
+          this.success.username = false;
           this.success.username = true
+          console.log('username is valid');
         })
         .catch(error => {
+          console.log('username is invalid');
           this.errors.username = true
-          console.log(error)
         })
       },
 
       validatePassword () {
         if ((this.confirmPassword.trim().length) && (this.password === this.confirmPassword)) {
+          this.errors.password = false;
           this.successes.password = true
         } else {
           this.errors.password = true
@@ -140,6 +150,7 @@
 
       validateEmail () {
         ValidationServer.email(this, this.username).then(isValid => {
+          this.errors.emailAddress = false;
           this.success.emailAddress = true
         })
         .catch(error => {
@@ -150,6 +161,7 @@
 
       validateFirstName () {
         if (this.firstname.trim().length) {
+          this.errors.firstname = false;
           this.success.firstname = true
         } else {
           this.errors.firstname = true
@@ -158,6 +170,7 @@
 
       validateLastName () {
         if (this.lastname.trim().length) {
+          this.errors.lastname = false;
           this.success.lastname = true
         } else {
           this.errors.lastname = true
@@ -165,7 +178,20 @@
       },
 
       hadleSubmit () {
-        console.log('Staff saved')
+        const user = {
+          firstName: this.firstname,
+          lastName: this.lastname,
+          username: this.username,
+          emailAddress: this.emailAddress,
+          password: this.password,
+          RoleId: parseInt(localStorage.getItem('userRole')),
+        };
+
+        AuthServer.createUser(this, user).then((user) => {
+          Router.push('/login');
+        }).catch((err) => {
+          this.regError = err;
+        });
       }
     }
   }

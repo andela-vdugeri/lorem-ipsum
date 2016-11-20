@@ -23,7 +23,13 @@
       this.matchUserToken().then(success => {
         if(success.success) {
           this.validated = true;
-          router.push('/student');
+          if(success.role === 2) {
+            localStorage.setItem('userRole', success.role);
+            router.push('/student');
+          } else {
+            localStorage.setItem('userRole', success.role);
+            router.push('/staff/new');
+          }
         } else {
           this.validated = false;
         }

@@ -15,17 +15,25 @@
            </div>
            <div class="form-group">
              <label for="email-address" class="control-label">Email Address</label>
-             <input 
-              type="text" 
-              id="emai-address" 
+             <input
+              type="text"
+              id="emai-address"
               class="form-control"
               placeholder="Email Address"
               v-model="email"
             >
            </div>
            <div class="form-group">
-             <input 
-              type="button" 
+             <label for="user-role" class="control-label">User Role</label>
+             <select v-model="role" class="form-control">
+               <option v-for="role in roles" v-bind:value="role.id">
+                 {{role.name}}
+               </option>
+             </select>
+           </div>
+           <div class="form-group">
+             <input
+              type="button"
               class="btn btn-primary pull-right"
               v-on:click="handleClick"
               value="Submit"
@@ -39,7 +47,7 @@
 </template>
 
 <script>
-  import MailService from '../services/mailer.js'; 
+  import MailService from '../services/mailer.js';
   import UserService from '../services/auth';
   export default {
     data() {
@@ -53,13 +61,17 @@
           message: ''
         },
         email: '',
+        roles : [
+          {id: 1, name: 'Staff'},
+          {id: 2, name: 'Student'}
+        ],
+        role: '2'
       };
     },
     methods: {
       handleClick() {
         UserService.checkMailDup(this, this.email).then(res => {
-          console.log('token not found');
-          MailService.sendMail(this, this.email).then(res => {
+          MailService.sendMail(this, this.email, this.role).then(res => {
             this.error.state = false;
             this.success.state = true;
             this.success.message = 'Please check your email to complete your registration';
