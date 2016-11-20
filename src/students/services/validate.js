@@ -17,7 +17,7 @@ class ValidationServer {
         }
       }).catch(error => {
         if(error.status === 404 ) {
-            resolve(error);
+            resolve({ message: 'No user with that username'});
         } else {
           reject(error);
         }
@@ -26,9 +26,13 @@ class ValidationServer {
   }
 
   email (context, email) {
-    const endpoint = this.apiUrl + '/users/' + email;
+    const endpoint = this.apiUrl + '/users/email';
+    const payload = {
+      email,
+    };
+    
     return new Promise((resolve, reject) => {
-      context.$http.get(endpoint).then(user => {
+      context.$http.post(endpoint, payload).then(user => {
         if (user) {
           reject();
         } else {

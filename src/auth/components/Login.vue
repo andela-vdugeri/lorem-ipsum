@@ -1,6 +1,9 @@
 <template>
   <div class="container margin-top">
     <div class="col-md-5 col-md-offset-5">
+      <div class="alert alert-info" v-if="message">
+        {{ message }}
+      </div>
       <div class="panel panel-default">
       <div class="panel-heading">Login</div>
       <div class="panel-body">
@@ -18,7 +21,7 @@
           <div class="form-group" v-bind:class="{'has-error': errors.password}">
             <label for="password">Password</label>
             <input
-              type="text"
+              type="password"
               placeholder="Password"
               class="form-control"
               v-model="password"
@@ -43,11 +46,24 @@
 
 
 <script>
+  import AuthService from '../services/auth';
+  import {router} from '../../main';
+
   export default {
+    mounted() {
+      const user = JSON.parse(localStorage.getItem('school-portal-user'));
+      if(user) {
+        this.message = 'Your account has been created. Please login to continue';
+        this.username = user.username;
+        localStorage.removeItem('school-portal-user');
+      }
+    },
+
     data () {
       return {
         username: '',
         password: '',
+        message: '',
         errors: {}
       }
     },
@@ -58,7 +74,16 @@
     },
     methods: {
       submitForm () {
-        console.log('Hello')
+        const user = {
+          username: this.username,
+          password: this.password,
+        };
+        AuthService.login(this, this.password).then(user => {
+          localStorage.setItem('school-portal-user', JSON.stringify(user));
+          router.push('/home');
+        }).catch(err => {
+          this.errors.message = err.message;
+        });
       }
     }
   }

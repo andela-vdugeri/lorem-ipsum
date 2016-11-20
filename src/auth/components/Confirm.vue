@@ -33,15 +33,14 @@
         } else {
           this.validated = false;
         }
-      })
-      .catch(error => {
+      }).catch(error => {
         this.validated = false;
       });
     },
     data() {
       return {
-          token: '',
-          validated: false,
+        token: '',
+        validated: false,
       }
     },
     methods: {
@@ -49,8 +48,7 @@
         return new Promise((resolve, reject) => {
           AuthService.getToken(this, this.token).then(success => {
             resolve(success);
-          })
-          .catch(error => {
+          }).catch(error => {
             reject(error);
           });
         });

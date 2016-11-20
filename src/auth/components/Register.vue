@@ -71,18 +71,21 @@
     methods: {
       handleClick() {
         UserService.checkMailDup(this, this.email).then(res => {
-          MailService.sendMail(this, this.email, this.role).then(res => {
-            this.error.state = false;
-            this.success.state = true;
-            this.success.message = 'Please check your email to complete your registration';
-            this.email = '';
-          })
-          .catch(err => {
+          UserService.checkTokenDup(this, this.email).then(res => {
+            MailService.sendMail(this, this.email, this.role).then(res => {
+              this.error.state = false;
+              this.success.state = true;
+              this.success.message = 'Please check your email to complete your registration';
+              this.email = '';
+            }).catch(err => {
+              this.error.state = true;
+              this.error.message = 'This email is already in use';
+            });
+          }).catch(err => {
             this.error.state = true;
-            this.error.message = err.message;
-          });
+            this.error.message = 'This email is alread in use';
+          })
         }).catch(err => {
-          console.log(err);
           this.error.state = true;
           this.error.message = 'This email is already in use';
         });

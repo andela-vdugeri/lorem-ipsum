@@ -95,7 +95,7 @@
 
 
 <script>
-  import {Router} from '../main';
+  import {router} from '../main';
   import AuthServer from '../auth/services/auth';
   import ValidationServer from './../students/services/validate';
 
@@ -131,11 +131,9 @@
         ValidationServer.username(this, this.username).then(isValid => {
           this.success.username = false;
           this.success.username = true
-          console.log('username is valid');
         })
         .catch(error => {
           console.log('username is invalid');
-          this.errors.username = true
         })
       },
 
@@ -188,7 +186,10 @@
         };
 
         AuthServer.createUser(this, user).then((user) => {
-          Router.push('/login');
+          localStorage.removeItem('portal-confirm-email');
+          localStorage.removeItem('userRole');
+          localStorage.setItem('school-portal-user', JSON.stringify(user));
+          router.push('/login');
         }).catch((err) => {
           this.regError = err;
         });

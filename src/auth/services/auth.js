@@ -8,12 +8,12 @@ class AuthServer {
 
   getToken(context, token) {
     const email = localStorage.getItem('portal-confirm-email');
-    const endpoint = config.apiUrl + '/users/token/confirm';
+    const endpoint = config.apiUrl + '/tokens/match';
     const payload = {
       token,
       email
     };
-
+    console.log(payload);
     return new Promise((resolve, reject) => {
       context.$http.post(endpoint, payload).then(success => {
         resolve(success.data);
@@ -25,12 +25,29 @@ class AuthServer {
   }
 
   checkMailDup(context, email) {
-    const endpoint = config.apiUrl + '/tokens/' + email;
+    const endpoint = config.apiUrl + '/users/email';
+    const payload = {
+      email,
+    };
     return new Promise((resolve, reject) => {
-      context.$http.get(endpoint).then(res => {
+      context.$http.post(endpoint, payload).then(res => {
         reject(res.data);
       }).catch(err => {
         resolve(err.data);
+      });
+    });
+  }
+
+  checkTokenDup(context, email) {
+    const endpoint = config.apiUrl + '/tokens/email/find';
+    const payload = {
+      email
+    };
+    return new Promise((resolve, reject) => {
+      context.$http.post(endpoint, payload).then(res => {
+        reject(res.data);
+      }).catch(err => {
+        resolve(err);
       });
     });
   }
@@ -45,6 +62,10 @@ class AuthServer {
         reject(err);
       });
     });
+  }
+
+  login(context, user) {
+    const endpoint = config.apiUrl + '/'
   }
 }
 
